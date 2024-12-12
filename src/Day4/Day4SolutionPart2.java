@@ -75,7 +75,7 @@ public class Day4SolutionPart2 {
   }
 
   public boolean countMAS(char[][] wordGrid, int row, int col) {
-    // Look for 'A' and then check NW, SE, NE, SW for the M-S or S-M on the diagonal
+    // Look for 'A' since it's in the middle of the X and then check NW, SE, NE, SW for the M-S or S-M on the diagonal
     
     if (wordGrid[row][col] == 'A') {
       char topLeft = getCharForGridLocation(wordGrid, row, col, DirectionEnum.NORTHWEST);
