@@ -17,7 +17,7 @@ public class DiskObject {
     }
     m_type = p_objectType;
     m_iLength = p_iLength;
-    m_iFileNumber = -1;  //This is a free space block, so there is no file number
+    m_iFileNumber = 0;  //This is a free space block, so there is no file number
   }
 
   public int getLength() {
@@ -29,6 +29,9 @@ public class DiskObject {
   }
 
   public int getFileNumber() {
+    if(getType() == DiskObjectTypeEnum.FREE_SPACE) {
+      return 0;
+    }
     return m_iFileNumber;
   }
 
