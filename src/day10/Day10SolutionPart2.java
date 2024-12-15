@@ -11,7 +11,7 @@ import common.Coordinate;
 import common.DirectionEnum;
 
 public class Day10SolutionPart2 {
-  private final static String FILE_NAME = "src/day10/Day10Test.txt";
+  private final static String FILE_NAME = "src/day10/Day10Input.txt";
   
   public static void main(String[] args) {
     Day10SolutionPart2 solution = new Day10SolutionPart2();
@@ -64,47 +64,41 @@ public class Day10SolutionPart2 {
     }
     int iTotalBranchCountToPeak = 0;  //This will be my total of paths that I can take to get to the peaks
     //Now I have all of my starting positions....
+    HashSet<Coordinate> hashPeaks = new HashSet<Coordinate>();  //This will keep track of my peaks (when I hit a 9)
     for(Coordinate startingCoord : lstStartingLocations) {
-      Deque<Coordinate> currentLocationDeck = new ArrayDeque<Coordinate>();
-      currentLocationDeck.add(startingCoord);  //My current starting location
-      HashSet<Coordinate> hashPeaks = new HashSet<Coordinate>();  //This will keep track of my peaks (when I hit a 9)
-      int iNumOfPaths = 0;  //keep track of the number of paths that get me to a peak
-      
-      while(!currentLocationDeck.isEmpty()) {
-        Coordinate currentCoordinate = currentLocationDeck.pop();  //Get the current location on my queue
-        for(DirectionEnum dirEnum : DirectionEnum.values()) {
-          //Traverse all 4 directions (no diagonals in this puzzle)
-          Coordinate newCoordinate = dirEnum.getCoordinateForDirection(currentCoordinate);
-          
-          if(isOutOfBounds(mapGrid, newCoordinate)) {
-            continue;  //I'm out of bounds!
-          }
-          
-          //Get the height of the location I'm currently at
-          int iCurrentHeight = Character.getNumericValue(getCharAtCoord(mapGrid, currentCoordinate));
-          //Get the height of the new location I am traveling to
-          int iNewHeight = Character.getNumericValue(getCharAtCoord(mapGrid, newCoordinate));
-          
-          if((iNewHeight - iCurrentHeight) != 1) {
-            continue;  //I can only be one higher at the new location
-          }
-          
-          //See if I'm at the peak (9)
-          if(iNewHeight == 9) {
-            //See if I've seen this before
-            if(!hashPeaks.contains(newCoordinate)) {
-              iNumOfPaths++;
-              hashPeaks.add(newCoordinate);
-            }
-            continue; //Keep going
-          }
-          
-          currentLocationDeck.add(newCoordinate);  //I'm in a new location now...push it onto the deck
-        }
-      }
-      iTotalBranchCountToPeak += iNumOfPaths;
+      hashPeaks.clear();  //Clear everything in case I've been here before
+      iTotalBranchCountToPeak += countPathsToPeak(mapGrid, startingCoord, hashPeaks);
     }
     return iTotalBranchCountToPeak;
+  }
+  
+  private int countPathsToPeak(char[][] mapGrid, Coordinate p_currentCoordinate, HashSet<Coordinate> hashPeaks) {
+    //Check to see if I'm already at the peak
+    int iCurrentHeight = Character.getNumericValue(getCharAtCoord(mapGrid, p_currentCoordinate));
+    if(iCurrentHeight == 9) {
+      //I've reached a peak
+      hashPeaks.add(p_currentCoordinate);
+      return 1;
+    }
+    //O.K. I'm not at a peak so look in every direction for a path
+    int iTotalPaths = 0;
+    for(DirectionEnum dirEnum : DirectionEnum.values()) {
+      //Traverse all 4 directions (no diagonals in this puzzle)
+      Coordinate newCoordinate = dirEnum.getCoordinateForDirection(p_currentCoordinate);
+      
+      if(isOutOfBounds(mapGrid, newCoordinate)) {
+        continue;  //I'm out of bounds!
+      }
+      
+      //See if the new location is 1 higher than my current location...and if so, keep traversing that path until I hit a peak
+      int iNewHeight = Character.getNumericValue(getCharAtCoord(mapGrid, newCoordinate));
+     
+      if((iNewHeight - iCurrentHeight) == 1) {
+        //This new coordinate is only one higher, so I can keep going on this path
+        iTotalPaths += countPathsToPeak(mapGrid, newCoordinate, hashPeaks);  //Yay!  More recursive code!!!
+      }
+    }
+    return iTotalPaths;
   }
   
   private boolean isOutOfBounds(char[][] mapGrid, Coordinate p_coord) {
