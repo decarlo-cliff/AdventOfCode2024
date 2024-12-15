@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import common.Coordinate;
+
 public class Day8SolutionPart1 {
   private final static String FILE_NAME = "src/day8/Day8Input.txt";
   

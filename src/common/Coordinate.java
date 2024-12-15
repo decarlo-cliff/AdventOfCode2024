@@ -1,4 +1,6 @@
-package day8;
+package common;
+
+import java.util.Objects;
 
 public class Coordinate {
   private int m_iRow;
@@ -37,5 +39,10 @@ public class Coordinate {
   @Override
   public String toString() {
     return getRow() + "," + getCol();
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(getRow(), getCol());
   }
 }

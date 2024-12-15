@@ -44,7 +44,7 @@ public class Day4SolutionPart2 {
     }
   }
 
-  public static boolean isOutOfBounds(int iGridLength, int iGridColLength, int row, int col){
+  public static boolean isOutOfBounds(int iGridLength, int iGridColLength, int row, int col) {
     //is the row/col I'm asking for beyond the bounds of the grid?
     return (row < 0 || row > iGridLength - 1 || col < 0 || col > iGridColLength - 1);
   }
