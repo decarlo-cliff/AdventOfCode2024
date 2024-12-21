@@ -61,6 +61,7 @@ public class PlutoStone implements Serializable {
   
   public List<PlutoStone> blinkStones(List<PlutoStone> p_lstStones, int p_iBlinkTimes) {
     List<PlutoStone> lstNewStones = new ArrayList<PlutoStone>();
+    System.out.println("Blink : " + p_iBlinkTimes);
     if(p_iBlinkTimes == 0) {
       return p_lstStones;
     }
