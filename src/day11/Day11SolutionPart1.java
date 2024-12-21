@@ -41,7 +41,7 @@ public class Day11SolutionPart1 {
         }
       }
       //Now I have my list of stones....blink them!
-      long lNewStoneCount = blinkStones(lstStones, 75);
+      long lNewStoneCount = blinkStones(lstStones, 25);
       
       System.out.println("New Stone Count = " + lNewStoneCount);
       

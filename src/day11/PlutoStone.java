@@ -30,7 +30,7 @@ public class PlutoStone implements Serializable {
     m_strNumber = Long.toString(p_lNumber);
   }
   
-  private boolean isZero() {
+  public boolean isZero() {
     if(Long.valueOf(m_strNumber) == 0) {
       return true;
     }
@@ -39,6 +39,33 @@ public class PlutoStone implements Serializable {
   
   private boolean hasEvenDigits() {
     return !isZero() && ((m_strNumber.length() % 2) == 0);
+  }
+  
+  public static boolean hasEvenDigits(Long p_lNumber) {
+    String strNumber = Long.toString(p_lNumber);
+    if((p_lNumber != 0) && (strNumber.length() % 2 == 0)) {
+      return true;
+    }
+    return false;
+  }
+  
+  public Long getLongValueOfStone() {
+    return Long.valueOf(m_strNumber);
+  }
+  
+  public static Long[] splitDigitsToLong(String p_strNumber) {
+    if(p_strNumber.length() % 2 == 0) {
+      Long[] lArray = new Long[2];
+      lArray[0] = Long.valueOf(p_strNumber.substring(0, p_strNumber.length() / 2));
+      lArray[1] = Long.valueOf(p_strNumber.substring(p_strNumber.length() / 2));
+      return lArray;
+    }
+    
+    return null;
+  }
+  
+  public static Long[] splitDigitsToLong(Long p_lNumber) {
+    return splitDigitsToLong(p_lNumber.toString());
   }
   
   private String[] splitDigits() {
@@ -54,9 +81,13 @@ public class PlutoStone implements Serializable {
     }
   }
   
-  private PlutoStone multiplyBy2024() {
+  public PlutoStone multiplyBy2024() {
     Long lNewValue = Long.valueOf(m_strNumber) * 2024;
     return new PlutoStone(lNewValue);
+  }
+  
+  public Long multiplyStoneBy2024() {
+    return  Long.valueOf(m_strNumber) * 2024;
   }
   
   public List<PlutoStone> blinkStones(List<PlutoStone> p_lstStones, int p_iBlinkTimes) {
